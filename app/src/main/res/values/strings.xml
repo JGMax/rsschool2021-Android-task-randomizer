@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">randomizer</string>
+    <string name="min">Min</string>
+    <string name="max">Max</string>
+    <string name="back">Back</string>
+    <string name="result">Result:</string>
+    <string name="previous_result">Previous result:</string>
+    <string name="generate">Generate</string>
+    <string name="invalid_data">Invalid data</string>
+    <string name="unknown">Unknown</string>
 </resources>
