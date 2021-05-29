@@ -49,7 +49,7 @@ class SecondFragment : Fragment() {
     }
 
     private fun generate(min: Int, max: Int): Int {
-        return Random.nextInt(min, max + 1)
+        return (min..max).random()
     }
 
     companion object {
