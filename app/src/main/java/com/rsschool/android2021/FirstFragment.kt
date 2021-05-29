@@ -42,8 +42,8 @@ class FirstFragment : Fragment(), OnReceiveResultListener {
         updateResult(result)
         binding.let { b ->
             b.generate.setOnClickListener {
-                val min = b.minValue.getIntValue()
-                val max = b.maxValue.getIntValue()
+                val min = b.minValue.getIntValueOrNull()
+                val max = b.maxValue.getIntValueOrNull()
                 if (min != null && max != null && validData(min, max)) {
                     listener?.onGenerateClick(min, max)
                 } else {
@@ -59,7 +59,6 @@ class FirstFragment : Fragment(), OnReceiveResultListener {
     private fun updateResult(result: Int?) {
         binding.previousResult.text = getString(R.string.previous_result) + " " +
                 (result?.toString() ?: getString(R.string.unknown))
-        val text = binding.previousResult.text
     }
 
     private fun validData(min: Int, max: Int) : Boolean {
@@ -69,14 +68,8 @@ class FirstFragment : Fragment(), OnReceiveResultListener {
         }
     }
 
-    private fun EditText.getIntValue() : Int? {
-        val str = this.text.toString()
-        return try {
-            str.toInt()
-        } catch (e: NumberFormatException) {
-            null
-        }
-    }
+    private fun EditText.getIntValueOrNull() : Int? =
+        this.text.toString().toIntOrNull()
 
     companion object {
         @JvmStatic
