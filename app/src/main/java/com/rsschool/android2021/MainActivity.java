@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity
     private final String SECOND_FRAGMENT_TAG = "SecondFragment";
 
     private OnReceiveResultListener listener = null;
+    private OnSystemBackPressedListener backPressedListener = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,6 +37,9 @@ public class MainActivity extends AppCompatActivity
 
     private void openSecondFragment(int min, int max) {
         final Fragment secondFragment = SecondFragment.newInstance(min, max);
+        if (secondFragment instanceof OnSystemBackPressedListener) {
+            backPressedListener = (OnSystemBackPressedListener)secondFragment;
+        }
         final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, secondFragment);
         transaction.addToBackStack(SECOND_FRAGMENT_TAG);
@@ -48,8 +52,19 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onBackPressed(int result) {
+    public void onBackPressed(Integer result) {
         getSupportFragmentManager().popBackStack();
-        listener.onReceiveResult(result);
+        if (result != null) {
+            listener.onReceiveResult(result);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (backPressedListener != null) {
+            backPressedListener.onSystemBackPressed();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

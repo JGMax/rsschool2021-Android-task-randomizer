@@ -11,13 +11,14 @@ import androidx.fragment.app.Fragment
 import com.rsschool.android2021.databinding.FragmentSecondBinding
 import kotlin.random.Random
 
-class SecondFragment : Fragment() {
+class SecondFragment : Fragment(), OnSystemBackPressedListener {
 
     private val binding: FragmentSecondBinding by lazy {
         FragmentSecondBinding.inflate(layoutInflater)
     }
 
     private var listener: OnBackPressedListener? = null
+    private var randomResult: Int? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -39,7 +40,7 @@ class SecondFragment : Fragment() {
         val max = arguments?.getInt(MAX_VALUE_KEY) ?: 0
 
         binding.apply {
-            val randomResult = generate(min, max)
+            randomResult = generate(min, max)
             result.text = randomResult.toString()
 
             back.setOnClickListener {
@@ -69,6 +70,10 @@ class SecondFragment : Fragment() {
     }
 
     interface OnBackPressedListener {
-        fun onBackPressed(result: Int)
+        fun onBackPressed(result: Int?)
+    }
+
+    override fun onSystemBackPressed() {
+        listener?.onBackPressed(randomResult)
     }
 }
